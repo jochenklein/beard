@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Beard.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Beard is a free software; you can redistribute it and/or modify it
 # under the terms of the Revised BSD License; see LICENSE file for
@@ -20,6 +20,7 @@ import argparse
 import pickle
 import json
 import numpy as np
+import os
 
 from functools import partial
 
@@ -227,6 +228,11 @@ def clustering(input_signatures, input_records, distance_model,
         for label in np.unique(labels):
             mask = (labels == label)
             clusters[str(label)] = [r[0]["signature_id"] for r in X[mask]]
+
+        # Create non-existing directories for given file path
+        directory = os.path.dirname(output_clusters)
+        if (directory and not os.path.exists(directory)):
+            os.makedirs(directory)
 
         json.dump(clusters, open(output_clusters, "w"))
 

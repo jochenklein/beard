@@ -40,6 +40,7 @@ import argparse
 import json
 import math
 import numpy as np
+import os
 import random
 
 from beard.clustering import block_phonetic
@@ -285,6 +286,11 @@ if __name__ == "__main__":
 
     if args.verbose:
         print("number of pairs", len(pairs))
+
+    # Create non-existing directories for given file path
+    directory = os.path.dirname(args.output_pairs)
+    if (directory and not os.path.exists(directory)):
+        os.makedirs(directory)
 
     json.dump(pairs, open(args.output_pairs, "w"))
 
